@@ -1,12 +1,14 @@
 # flutter_playground
 
-A new Flutter project.
+## About this Repo
 
-## Getting Started
+Don't think you will find anything extra-ordinary in this repo. Just another repo I put on GitHub to use a storage resource and playground for flutter
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+
+
+## Starter Resources
+
 
 - [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
 - [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
