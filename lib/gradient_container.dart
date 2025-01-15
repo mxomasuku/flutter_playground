@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_playground/styled_text.dart';
+// import 'package:flutter_playground/styled_text.dart';
+import 'package:flutter_playground/dice_roller.dart';
 
 const startAlignment = Alignment.topLeft;
 // Alignment? startAlignment;
@@ -21,7 +22,9 @@ class GradientContainer extends StatelessWidget {
         begin: startAlignment,
         end: endAlignment,
       )),
-      child: Center(child: StyledText('Hello Flutter')),
+      child: Center(
+        child: DiceRoller(),
+      ),
     );
   }
 }
