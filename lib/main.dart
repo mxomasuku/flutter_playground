@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_playground/gradient_container.dart';
+import "package:flutter_playground/start_screen.dart";
 
 void main() {
-  runApp(MaterialApp(
-    home: Scaffold(
-      backgroundColor: Color.fromARGB(255, 159, 138, 194),
-      body: GradientContainer(Color.fromARGB(238, 167, 31, 213),
-          Color.fromARGB(121, 236, 195, 195)),
+  runApp(
+    MaterialApp(
+      home: Scaffold(
+        backgroundColor: Colors.deepPurple,
+        body: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(colors: [
+              Colors.deepPurple,
+              Color.fromARGB(31, 229, 219, 219),
+            ]),
+          ),
+          child: StartScreen(),
+        ),
+      ),
     ),
-  ));
+  );
 }
