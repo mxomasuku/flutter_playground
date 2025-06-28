@@ -18,11 +18,7 @@ class User {
   void describe() {
     print("Person: $userName");
     var birthday = this.birthday;
-    if (birthday != null) {
-      int years = DateTime.now().difference(birthday).inDays ~/ 365;
-      print("Was born: $birthYear ($years years ago)");
-    } else {
-      print("Unborn");
+    int years = DateTime.now().difference(birthday).inDays ~/ 365;
+    print("Was born: $birthYear ($years years ago)");
     }
-  }
 }
