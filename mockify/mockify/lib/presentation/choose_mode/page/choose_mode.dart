@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mockify/common/widgets/basic_app_button.dart';
 import 'package:mockify/core/configs/assets/app_images.dart';
 import 'package:mockify/core/configs/assets/app_vectors.dart';
+import 'package:mockify/presentation/auth/signup_or_signin.dart';
 import 'package:mockify/presentation/choose_mode/bloc/theme_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -137,7 +138,8 @@ class _ChooseModeState extends State<ChooseMode> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (BuildContext context) => const ChooseMode(),
+                        builder: (BuildContext context) =>
+                            const SignupOrSignin(),
                       ),
                     );
                   },
