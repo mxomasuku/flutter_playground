@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "812939948258",
+    "project_id": "mockify0101",
+    "storage_bucket": "mockify0101.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:812939948258:android:338f582d83dbbc6c28eebb",
+        "android_client_info": {
+          "package_name": "com.example.mockify"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcLv-MhYdMIIfZPeUnC5tza8lpC2eJd4M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

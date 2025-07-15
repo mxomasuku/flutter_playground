@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:mockify/common/helpers/is_dark_mode.dart';
+import 'package:mockify/common/widgets/appbar/appbar.dart';
 import 'package:mockify/common/widgets/basic_app_button.dart';
 import 'package:mockify/core/configs/assets/app_images.dart';
 import 'package:mockify/core/configs/assets/app_vectors.dart';
 import 'package:mockify/core/configs/theme/app_colors.dart';
+import 'package:mockify/presentation/auth/pages/sign_in.dart';
+import 'package:mockify/presentation/auth/pages/sign_up.dart';
 
 class SignupOrSignin extends StatelessWidget {
   const SignupOrSignin({super.key});
@@ -13,6 +17,7 @@ class SignupOrSignin extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
+          BasicAppBar(),
           Align(
             alignment: Alignment.topRight,
             child: SvgPicture.asset(AppVectors.unionPattern),
@@ -62,14 +67,38 @@ class SignupOrSignin extends StatelessWidget {
                         flex: 1,
                         child: BasicAppButton(
                           title: 'Register',
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                     SignUp(),
+                              ),
+                            );
+                          },
                         ),
                       ),
                       SizedBox(width: 20),
                       Expanded(
                         child: TextButton(
-                          child: Text('Log In', style: TextStyle(fontSize: 18)),
-                          onPressed: () {},
+                          child: Text(
+                            'Log In',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: context.isDarkmode
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    const SignIn(),
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ],
