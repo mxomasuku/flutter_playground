@@ -1,7 +1,7 @@
 class User {
-  User({this.email, this.fullName, this.userId});
+  User({required this.email, this.fullName, required this.userId});
 
   String? fullName;
-  String? userId;
-  String? email;
+  String userId;
+  String email;
 }

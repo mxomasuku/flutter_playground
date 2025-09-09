@@ -23,7 +23,7 @@ class _QuizState extends State<Quiz> {
   //   super.initState();
   // }
 
-  void switchScreen() {
+void switchScreen() {
     setState(() {
       activeScreen = "questions-screen";
     });

@@ -3,10 +3,22 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mockify/common/widgets/appbar/appbar.dart';
 import 'package:mockify/common/widgets/basic_app_button.dart';
 import 'package:mockify/core/configs/assets/app_vectors.dart';
+import 'package:mockify/data/models/auth/sign_in_req.dart';
+import 'package:mockify/domain/usecases/auth/signin.dart';
 import 'package:mockify/presentation/auth/pages/sign_up.dart';
+import 'package:mockify/service_locator.dart';
+import 'package:mockify/presentation/root/pages/root.dart';
 
-class SignIn extends StatelessWidget {
+class SignIn extends StatefulWidget {
   const SignIn({super.key});
+
+  @override
+  State<SignIn> createState() => _SignInState();
+}
+
+class _SignInState extends State<SignIn> {
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _password = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +41,42 @@ class SignIn extends StatelessWidget {
             SizedBox(height: 20),
             _passwordField(context),
             SizedBox(height: 20),
-            BasicAppButton(title: 'Sign In', onPressed: () {}),
+            BasicAppButton(
+              title: 'Sign In',
+              onPressed: () async {
+                final result = await serviceLocator<SignInUseCase>().call(
+                  params: SignInUserReq(
+                    email: _email.text.trim(),
+                    password: _password.text.trim(),
+                  ),
+                );
+
+                if (!mounted) return;
+
+                result.fold(
+                  (l) {
+                    final errorMessage = l.toString();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          errorMessage,
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                        backgroundColor: Colors.red,
+                        behavior: SnackBarBehavior.floating,
+                      ),
+                    );
+                  },
+                  (r) {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (_) => Root()),
+                      (route) => false,
+                    );
+                  },
+                );
+              },
+            ),
           ],
         ),
       ),
@@ -45,6 +92,7 @@ class SignIn extends StatelessWidget {
 
   Widget _emailField(BuildContext context) {
     return TextField(
+      controller: _email,
       decoration: InputDecoration(
         hintText: 'Email',
       ).applyDefaults(Theme.of(context).inputDecorationTheme),
@@ -53,6 +101,7 @@ class SignIn extends StatelessWidget {
 
   Widget _passwordField(BuildContext context) {
     return TextField(
+      controller: _password,
       decoration: InputDecoration(
         hintText: 'Password',
       ).applyDefaults(Theme.of(context).inputDecorationTheme),
@@ -74,9 +123,7 @@ class SignIn extends StatelessWidget {
             onPressed: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) =>  SignUp(),
-                ),
+                MaterialPageRoute(builder: (BuildContext context) => SignUp()),
               );
             },
             child: Text('Register Now'),
