@@ -17,11 +17,11 @@ class _MainListState extends State<MainList> {
   void initState() {
     getGroceryItems();
     super.initState();
-    loadedItems = getGroceryItems();
   }
 
   List<GroceryItem> groceryItems = [];
-  late Future<List<GroceryItem>> loadedItems;
+  var _isLoading = true;
+  String? _error;
 
   void removeItem(GroceryItem item) async {
     setState(() {
@@ -34,9 +34,15 @@ class _MainListState extends State<MainList> {
     );
 
     final response = await http.delete(url);
+
+    if (response.statusCode >= 400) {
+      setState(() {
+        groceryItems.add(item);
+      });
+    }
   }
 
-  Future<List<GroceryItem>> getGroceryItems() async {
+  getGroceryItems() async {
     final url = Uri.https(
       'plexiform-plane-395112-default-rtdb.firebaseio.com',
       'shopping-list.json',
@@ -49,11 +55,16 @@ class _MainListState extends State<MainList> {
       );
 
       if (response.body == 'null') {
-        return [];
+        setState(() {
+          _isLoading = false;
+        });
+        return;
       }
 
       if (response.statusCode >= 400) {
-        throw Exception('Failed to fectcj ');
+        setState(() {
+          _error = "Failed to get data. An error occured";
+        });
       }
 
       final Map<String, dynamic> listData = json.decode(response.body);
@@ -74,14 +85,51 @@ class _MainListState extends State<MainList> {
           ),
         );
       }
-      return loadedItems;
+      setState(() {
+        groceryItems = loadedItems;
+        _isLoading = false;
+      });
     } catch (error) {
-      return [];
+      setState(() {
+        _error = "An unexpected error occured";
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    Widget content = Center(child: Text("No items added yet"));
+
+    if (_isLoading) {
+      content = Center(child: CircularProgressIndicator());
+    }
+
+    if (groceryItems.isNotEmpty) {
+      content = ListView.builder(
+        itemCount: groceryItems.length,
+
+        itemBuilder: (ctx, index) => Dismissible(
+          key: ValueKey(groceryItems[index].id),
+          onDismissed: (direction) {
+            removeItem(groceryItems[index]);
+          },
+          child: ListTile(
+            title: Text(groceryItems[index].name),
+            leading: Container(
+              height: 24,
+              width: 24,
+              color: groceryItems[index].category.color,
+            ),
+            trailing: Text(groceryItems[index].quantity.toString()),
+          ),
+        ),
+      );
+    }
+
+    if (_error != null) {
+      content = Center(child: Text(_error!));
+    }
+
     void addItem() async {
       final newItem = await Navigator.push<GroceryItem>(
         context,
@@ -104,43 +152,7 @@ class _MainListState extends State<MainList> {
         title: const Text("Shopping List"),
         actions: [IconButton(onPressed: addItem, icon: Icon(Icons.add))],
       ),
-      body: FutureBuilder(
-        future: getGroceryItems(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          }
-          if (snapshot.hasError) {
-            return Center(child: Text(snapshot.error.toString()));
-          }
-          if (snapshot.data!.isEmpty) {
-            return Center(child: Text("No items added yet"));
-          }
-          if (snapshot.data!.isNotEmpty) {
-            return ListView.builder(
-              itemCount: snapshot.data!.length,
-
-              itemBuilder: (ctx, index) => Dismissible(
-                key: ValueKey(snapshot.data![index].id),
-                onDismissed: (direction) {
-                  removeItem(snapshot.data![index]);
-                },
-                child: ListTile(
-                  title: Text(snapshot.data![index].name),
-                  leading: Container(
-                    height: 24,
-                    width: 24,
-                    color: snapshot.data![index].category.color,
-                  ),
-                  trailing: Text(groceryItems[index].quantity.toString()),
-                ),
-              ),
-            );
-          } else {
-            return Center(child: Text("No items added yet"));
-          }
-        },
-      ),
+      body: content,
     );
   }
 }
