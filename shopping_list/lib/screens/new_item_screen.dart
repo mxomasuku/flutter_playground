@@ -123,7 +123,7 @@ class _NewItemScreenState extends State<NewItemScreen> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: DropdownButtonFormField<Category>(
-                      value: _selectedCategory,
+                      initialValue: _selectedCategory,
                       items: [
                         for (final entry in categories.entries)
                           DropdownMenuItem<Category>(
