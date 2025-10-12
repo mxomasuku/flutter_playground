@@ -9,7 +9,6 @@ class PlacesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(places[1].title);
     if (places.isEmpty) {
       return Center(
         child: Text(
@@ -23,6 +22,7 @@ class PlacesList extends StatelessWidget {
 
     return ListView.builder(
       itemCount: places.length,
+
       itemBuilder: (context, index) => GestureDetector(
         onTap: () {
           Navigator.push(
@@ -33,9 +33,20 @@ class PlacesList extends StatelessWidget {
           );
         },
         child: ListTile(
+          leading: CircleAvatar(
+            radius: 26,
+            backgroundImage: FileImage(places[index].image),
+          ),
           title: Text(
             places[index].title,
+
             style: Theme.of(context).textTheme.titleMedium!.copyWith(
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+          ),
+          subtitle: Text(
+            places[index].location.address,
+            style: Theme.of(context).textTheme.titleSmall!.copyWith(
               color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
