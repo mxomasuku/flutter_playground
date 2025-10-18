@@ -65,4 +65,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'mockify0101.firebasestorage.app',
     iosBundleId: 'com.example.chatApp',
   );
+
 }
